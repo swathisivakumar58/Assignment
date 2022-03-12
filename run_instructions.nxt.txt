@@ -1,0 +1,95 @@
+# Empty dictionary for storing data in key:value format
+Dict_Roles ={'L0':[]}
+# Dict_Roles ={'L0': [{'name': 'CEO'}], 'L1': [{'name': 'COO', 'parent': 'CEO'}, {'name': 'CTO', 'parent': 'CEO'}], 'L2': [{'name': 'Director of Technology', 'parent': 'CTO'}, {'name': 'Senior Product Engineering Manager', 'parent': 'COO'}]}
+
+# function to add user
+def AddUser():
+    name = input("Enter User name:")
+    # store the user in dictionary with key L0 and value with list containing dictionary containing name of user
+    Dict_Roles['L0'] = [{"name":name}]
+    # print the dictionary
+    print(Dict_Roles)
+
+# function to add sub user
+def AddSubRole():
+    # take name and user/parent name and hierarchy level /length from root
+    name = input("Enter name:")
+    Uname = input("Enter User name under this roll:")
+    LHierarchyname = input("Enter Level of hierarchy:")
+    if(f"L{LHierarchyname}" in Dict_Roles):
+        Dict_Roles[f"L{LHierarchyname}"].append({"name":name,"parent":Uname})
+    else:
+        Dict_Roles[f"L{LHierarchyname}"] = [{"name":name,"parent":Uname}]
+# print dictionary
+    print(Dict_Roles)
+
+# function to display role
+def DisplayRole():
+    # key and value will contain dictionary key and value for every level
+    for key,value in Dict_Roles.items():
+        # print level
+        print(f"Level {key}")
+        for i in value:
+                print(i['name'])
+
+   
+
+# function to display user and subuser
+def DisplayUserAndSubuser():
+   # key and value will contain dictionary key and value for every level
+    for key,value in Dict_Roles.items():
+        # print level
+        print(f"Level {key}")
+        print("Users")
+        # for every level print name of user
+        for i in value:
+            if(key =='L0'):
+                print(i['name'])
+            else:
+                print(i['parent'])  
+        # for every level print sub user and their parent
+        for i in value:
+            if(key !='L0'):
+                print(f"Sub-Users name: {i['name']} parent: {i['parent']}")
+      
+
+
+# function to delete subuser
+def DeleteRole():
+    # take name parent name and hierarchy level
+    name = input("Enter name:")
+    Uname = input("Enter User name under this roll:")
+    LHierarchyname = input("Enter Level of hierarchy:")
+
+    # for every value in dictionary dict_Roles search for given name
+    for i in range(len(Dict_Roles[f"L{LHierarchyname}"])):
+        # if name and parent name match delete that dictionary else print not found
+        if(Dict_Roles[f"L{LHierarchyname}"][i]['name'] == name and Dict_Roles[f"L{LHierarchyname}"][i]['parent'] == Uname):
+            del Dict_Roles[f"L{LHierarchyname}"][i]
+            print("deleted")
+            break
+        else:
+
+            print("name not found")
+
+# function menu for operations
+def menu():
+    choice=0
+    # while loop will run until choice is not 7
+    while(choice !=7):
+        # taking input for choice and running function based on choice
+        choice = int(input("Operations:/n1. Add User2. Add Sub Role3. Display Role4. Delete Role5. Display Users6.Display Users and Sub Users7. EXITOperation to be Performed: "))
+        if(choice ==1):
+            # calling AddUser function
+            AddUser()
+        if(choice ==2):
+            AddSubRole()
+        if(choice ==3):
+            DisplayRole()
+        if(choice ==4):
+            DeleteRole()
+        if(choice ==5):
+            DisplayRole()
+        if(choice ==6):
+            DisplayUserAndSubuser()
+menu()
